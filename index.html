@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,86 +6,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VPN CHECK</title>
     <style>
-        body {
-            background-color: #0a0a0a;
-            color: #00ffcc;
-            font-family: 'Courier New', Courier, monospace;
-            text-align: center;
-        }
-        .container {
-            max-width: 600px;
-            margin: 100px auto;
-        }
-        button {
-            background-color: black;
-            color: #00ffcc;
-            border: 1px solid #00ffcc;
-            padding: 10px;
-            cursor: pointer;
-            margin: 5px;
-        }
-        button:hover {
-            background-color: #00ffcc;
-            color: black;
-        }
+        body { background-color: black; color: cyan; font-family: monospace; text-align: center; padding: 50px; }
+        button { background-color: white; border: none; padding: 10px; margin: 10px; cursor: pointer; }
     </style>
-</head>
-<body>
-    <div class="container" id="vpnContainer">
-        <h1>VPN CHECK</h1>
-        <p id="vpnQuestion">Are your VPN on?</p>
-        <button onclick="vpnCheck(true)">YES</button>
-        <button onclick="vpnCheck(false)">NO</button>
-    </div>
-
     <script>
-        function vpnCheck(isOn) {
-            let container = document.getElementById("vpnContainer");
-            if (isOn) {
-                container.innerHTML = `
-                    <h1>VPN CHECK</h1>
-                    <p>Your IP has been logged. You can't undo this.</p>
-                    <button onclick="nextStep('location')">OK</button>
-                `;
-            } else {
-                container.innerHTML = `
-                    <h1>VPN CHECK</h1>
-                    <p>Your IP has been logged. You can't undo this.</p>
-                    <button onclick="nextStep('warn')">OK</button>
-                `;
-            }
+        function getRandomIP() {
+            return `${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`;
         }
         
-        function nextStep(step) {
-            let container = document.getElementById("vpnContainer");
-            if (step === 'location') {
-                container.innerHTML = `
-                    <h1>VPN CHECK</h1>
-                    <p>Location detected: somewhere near you. Are you sure you want to continue?</p>
-                    <button onclick="nextStep('final')">Yes</button>
-                    <button onclick="vpnCheck(false)">No, I'll turn on VPN</button>
-                `;
-            } else if (step === 'warn') {
-                container.innerHTML = `
-                    <h1>VPN CHECK</h1>
-                    <p>Last warning. Turn on your VPN before it's too late.</p>
-                    <button onclick="nextStep('continue')">Continue anyway</button>
-                    <button onclick="window.location.reload()">Exit</button>
-                `;
-            } else if (step === 'final') {
-                container.innerHTML = `
-                    <h1>VPN CHECK</h1>
-                    <p>You're in. Stay cautious.</p>
-                    <button onclick="window.location.href='homepage.html'">Proceed</button>
-                `;
-            } else if (step === 'continue') {
-                container.innerHTML = `
-                    <h1>VPN CHECK</h1>
+        function startVPNCheck() {
+            document.getElementById("content").innerHTML = `
+                <p>Are your VPN on?</p>
+                <button onclick="vpnResponse(true)">YES</button>
+                <button onclick="vpnResponse(false)">NO</button>
+            `;
+        }
+
+        function vpnResponse(hasVPN) {
+            if (!hasVPN) {
+                let ip = getRandomIP();
+                document.getElementById("content").innerHTML = `
+                    <p>No VPN detected. Your real IP address is ${ip}. Location: [REDACTED]. Don’t bother checking, we already know.</p>
+                    <p>(Pause 2 seconds...)</p>
+                    <p>You’re completely exposed. The logs have been recorded.</p>
+                    <p>(Pause 2 seconds...)</p>
                     <p>Don't say I didn't warn you. Have fun.</p>
-                    <button onclick="window.location.href='homepage.html'">Proceed</button>
+                    <button onclick="goToHomepage()">Proceed Anyway</button>
+                    <button onclick="startVPNCheck()">Go Back</button>
+                `;
+            } else {
+                document.getElementById("content").innerHTML = `
+                    <p>Verifying VPN status...</p>
+                    <p>(Pause 2 seconds...)</p>
+                    <p>Confirmed. But are you sure it’s working?</p>
+                    <button onclick="vpnWorking(true)">YES</button>
+                    <button onclick="vpnWorking(false)">NO</button>
                 `;
             }
         }
+
+        function vpnWorking(isSure) {
+            if (isSure) {
+                let maskedIP = getRandomIP();
+                document.getElementById("content").innerHTML = `
+                    <p>Interesting. Checking your masked IP...</p>
+                    <p>(Pause 2 seconds...)</p>
+                    <p>Your IP address: ${maskedIP}. Location: UNKNOWN.</p>
+                    <p>Not bad. But VPNs are never truly secure. Do you trust it?</p>
+                    <button onclick="trustVPN(true)">YES</button>
+                    <button onclick="trustVPN(false)">NO</button>
+                `;
+            } else {
+                document.getElementById("content").innerHTML = `
+                    <p>Wise choice. Most VPNs leak data without you even knowing.</p>
+                    <p>(Pause 2 seconds...)</p>
+                    <p>Maybe you should double-check your settings before proceeding.</p>
+                    <button onclick="goToHomepage()">Proceed Anyway</button>
+                    <button onclick="startVPNCheck()">Go Back</button>
+                `;
+            }
+        }
+
+        function trustVPN(isTrusted) {
+            if (isTrusted) {
+                document.getElementById("content").innerHTML = `
+                    <p>Then let's see how far that trust gets you.</p>
+                    <button onclick="goToHomepage()">Continue</button>
+                    <button onclick="startVPNCheck()">Go Back</button>
+                `;
+            } else {
+                document.getElementById("content").innerHTML = `
+                    <p>Good. You might just survive.</p>
+                    <button onclick="goToHomepage()">Continue</button>
+                    <button onclick="startVPNCheck()">Go Back</button>
+                `;
+            }
+        }
+
+        function goToHomepage() {
+            window.location.href = "homepage.html";
+        }
     </script>
+</head>
+<body onload="startVPNCheck()">
+    <div id="content"></div>
 </body>
 </html>
+```
