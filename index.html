@@ -3,162 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEKOD Ultimate</title>
+    <title>DEKOD Access System</title>
     <style>
         body {
-            background-color: #0a0a0a;
-            color: #00ffcc;
+            background-color: black;
+            color: #00ff00;
             font-family: 'Courier New', Courier, monospace;
             text-align: center;
-            overflow: hidden;
-        }
-        .matrix {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            background: black;
-            z-index: 999;
-        }
-        .container {
-            max-width: 800px;
-            margin: 50px auto;
-            display: none;
-        }
-        a {
-            color: #ff4444;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
         }
         .hidden {
             display: none;
         }
+        #accessScreen {
+            font-size: 24px;
+            font-weight: bold;
+            border: 3px solid #00ff00;
+            padding: 20px;
+            display: inline-block;
+            margin-top: 50px;
+        }
+        input {
+            background: black;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            padding: 5px;
+        }
+        button {
+            background: black;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <canvas class="matrix" id="matrixCanvas"></canvas>
+    <div id="loadingScreen">
+        <p>Loading...</p>
+    </div>
     
-    <div class="container" id="content">
-        <h1>DEKOD ARCHIVE</h1>
-        <p>"This case is not a coincidence. Something is being hidden. Solve the mystery before it's too late."</p>
-        
-        <h3><a href="#" onclick="showPage('clues')">[ CLUES ]</a></h3>
-        <h3><a href="#" onclick="showPage('cctv')">[ CCTV FOOTAGE ]</a></h3>
-        <h3><a href="#" onclick="showPage('casefiles')">[ CASE FILES ]</a></h3>
-        <h3><a href="#" onclick="showPage('messages')">[ SECRET MESSAGES ]</a></h3>
+    <div id="passwordScreen" class="hidden">
+        <p>Enter Password:</p>
+        <input type="password" id="passwordInput">
+        <button onclick="checkPassword()">Submit</button>
+    </div>
+    
+    <div id="accessScreen" class="hidden">
+        <p>ACCESS GRANTED</p>
+    </div>
+    
+    <div id="vpnScreen" class="hidden">
+        <p>Verifying VPN status...</p>
+        <p>(Pause 2 seconds...)</p>
+        <p>Confirmed. But are you sure it’s working?</p>
+        <button onclick="vpnWorking(true)">YES</button>
+        <button onclick="vpnWorking(false)">NO</button>
     </div>
     
     <script>
-        const canvas = document.getElementById('matrixCanvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".split("");
-        const fontSize = 16;
-        const columns = canvas.width / fontSize;
-        const drops = Array(Math.floor(columns)).fill(1);
+        setTimeout(() => {
+            document.getElementById("loadingScreen").classList.add("hidden");
+            document.getElementById("passwordScreen").classList.remove("hidden");
+        }, 2000);
         
-        function drawMatrix() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#0F0';
-            ctx.font = `${fontSize}px monospace`;
-            drops.forEach((y, x) => {
-                const text = letters[Math.floor(Math.random() * letters.length)];
-                ctx.fillText(text, x * fontSize, y * fontSize);
-                if (y * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[x] = 0;
-                }
-                drops[x]++;
-            });
-        }
-        
-        function startGlitch() {
-            setTimeout(() => {
-                document.querySelector('.matrix').style.display = 'none';
-                document.getElementById('content').style.display = 'block';
-                startVPNVerification();
-            }, 3000);
-        }
-        
-        setInterval(drawMatrix, 50);
-        startGlitch();
-        
-        function startVPNVerification() {
-            document.getElementById("content").innerHTML = `
-                <p>Are your VPN on?</p>
-                <button onclick="vpnCheck(true)">YES</button>
-                <button onclick="vpnCheck(false)">NO</button>
-            `;
-        }
-
-        function vpnCheck(isVPNOn) {
-            if (isVPNOn) {
-                document.getElementById("content").innerHTML = `
-                    <p>Verifying VPN status...</p>
-                `;
+        function checkPassword() {
+            const correctPassword = "DEKOD2025";
+            let enteredPassword = document.getElementById("passwordInput").value;
+            
+            if (enteredPassword === correctPassword) {
+                document.getElementById("passwordScreen").classList.add("hidden");
+                document.getElementById("accessScreen").classList.remove("hidden");
+                
                 setTimeout(() => {
-                    document.getElementById("content").innerHTML = `
-                        <p>Confirmed. But are you sure it’s working?</p>
-                        <button onclick="vpnWorking(true)">YES</button>
-                        <button onclick="vpnWorking(false)">NO</button>
-                    `;
+                    document.getElementById("accessScreen").classList.add("hidden");
+                    document.getElementById("vpnScreen").classList.remove("hidden");
                 }, 2000);
             } else {
-                document.getElementById("content").innerHTML = `
-                    <p>No VPN detected. Your real IP address is 192.168.45.209. Location: [REDACTED]. Don’t bother checking, we already know.</p>
-                `;
-                setTimeout(() => {
-                    document.getElementById("content").innerHTML += `
-                        <p>You’re completely exposed. The logs have been recorded.</p>
-                    `;
-                }, 2000);
-                setTimeout(() => {
-                    document.getElementById("content").innerHTML += `
-                        <p>Don't say I didn't warn you. Have fun.</p>
-                        <button onclick="proceedHome()">Proceed Anyway</button>
-                    `;
-                }, 4000);
+                window.close();
             }
         }
-
-        function vpnWorking(isSure) {
-            if (isSure) {
-                document.getElementById("content").innerHTML = `
-                    <p>Interesting. Checking your masked IP...</p>
-                `;
-                setTimeout(() => {
-                    document.getElementById("content").innerHTML = `
-                        <p>Your IP address: 172.34.98.201. Location: UNKNOWN.</p>
-                        <p>Not bad. But VPNs are never truly secure. Do you trust it?</p>
-                        <button onclick="trustVPN(true)">YES</button>
-                        <button onclick="trustVPN(false)">NO</button>
-                    `;
-                }, 2000);
+        
+        function vpnWorking(status) {
+            if (status) {
+                window.location.href = "homepage.html"; 
             } else {
-                document.getElementById("content").innerHTML = `
-                    <p>Wise choice. Most VPNs leak data without you even knowing.</p>
-                `;
-                setTimeout(() => {
-                    document.getElementById("content").innerHTML += `
-                        <p>Maybe you should double-check your settings before proceeding.</p>
-                        <button onclick="proceedHome()">Proceed Anyway</button>
-                    `;
-                }, 2000);
+                alert("VPN not working! Please reconnect.");
             }
-        }
-
-        function trustVPN(isTrusted) {
-            document.getElementById("content").innerHTML = isTrusted ? 
-                `<p>Then let's see how far that trust gets you.</p>
-                <button onclick="proceedHome()">Continue</button>` : 
-                `<p>Good. You might just survive.</p>
-                <button onclick="proceedHome()">Continue</button>`;
-        }
-
-        function proceedHome() {
-            document.getElementById("content").innerHTML = `<h1>Welcome to DEKOD ARCHIVE</h1>`;
         }
     </script>
 </body>
