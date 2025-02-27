@@ -11,11 +11,6 @@
             100% { text-shadow: 2px 2px 0 red, -2px -2px 0 blue; }
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
         @keyframes flicker {
             0% { opacity: 0.1; }
             50% { opacity: 1; }
@@ -32,7 +27,7 @@
         .hidden {
             display: none;
         }
-        #loadingScreen, #accessScreen, #vpnScreen {
+        #loadingScreen, #accessScreen {
             font-size: 24px;
             font-weight: bold;
             border: 3px solid #00ff00;
@@ -81,18 +76,6 @@
         <button onclick="checkPassword()">Submit</button>
     </div>
     
-    <div id="accessScreen" class="hidden">
-        <p>ACCESS GRANTED</p>
-    </div>
-    
-    <div id="vpnScreen" class="hidden">
-        <p>Verifying VPN status...</p>
-        <p>(Pause 2 seconds...)</p>
-        <p>Confirmed. But are you sure it’s working?</p>
-        <button onclick="vpnWorking(true)">YES</button>
-        <button onclick="vpnWorking(false)">NO</button>
-    </div>
-    
     <div id="clock"></div>
     
     <script>
@@ -106,23 +89,12 @@
             let enteredPassword = document.getElementById("passwordInput").value;
             
             if (enteredPassword === correctPassword) {
-                document.getElementById("passwordScreen").classList.add("hidden");
-                document.getElementById("accessScreen").classList.remove("hidden");
-                
-                setTimeout(() => {
-                    document.getElementById("accessScreen").classList.add("hidden");
-                    document.getElementById("vpnScreen").classList.remove("hidden");
-                }, 2000);
-            } else {
-                window.close();
-            }
-        }
-        
-        function vpnWorking(status) {
-            if (status) {
                 window.location.href = "vpn.html"; 
             } else {
-                alert("VPN not working! Please refresh the page.");
+                alert("Oopss, wrong password.");
+                setTimeout(() => {
+                    window.close();
+                }, 4000);
             }
         }
         
