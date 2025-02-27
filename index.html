@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEKOD Investigation Archive</title>
+    <title>VPN CHECK</title>
     <style>
         body {
             background-color: #0a0a0a;
@@ -12,106 +12,78 @@
             text-align: center;
         }
         .container {
-            max-width: 800px;
-            margin: 50px auto;
+            max-width: 600px;
+            margin: 100px auto;
         }
-        a {
-            color: #ff4444;
-            text-decoration: none;
+        button {
+            background-color: black;
+            color: #00ffcc;
+            border: 1px solid #00ffcc;
+            padding: 10px;
+            cursor: pointer;
+            margin: 5px;
         }
-        a:hover {
-            text-decoration: underline;
-        }
-        .hidden {
-            display: none;
+        button:hover {
+            background-color: #00ffcc;
+            color: black;
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="vpnContainer">
         <h1>VPN CHECK</h1>
-        <p>Are your VPN on?</p>
+        <p id="vpnQuestion">Are your VPN on?</p>
         <button onclick="vpnCheck(true)">YES</button>
         <button onclick="vpnCheck(false)">NO</button>
-        
-        <div id="vpnResponse" class="hidden">
-            <p id="vpnMessage"></p>
-            <button id="proceedButton" class="hidden" onclick="showHomepage()">Proceed</button>
-        </div>
     </div>
-    
-    <div id="homepage" class="hidden">
-        <h1>DEKOD ARCHIVE</h1>
-        <p>"This case is not a coincidence. Something is being hidden. Solve the mystery before it's too late."</p>
-        <h3><a href="#" onclick="showPage('clues')">[ CLUES ]</a></h3>
-        <h3><a href="#" onclick="showPage('cctv')">[ CCTV FOOTAGE ]</a></h3>
-        <h3><a href="#" onclick="showPage('casefiles')">[ CASE FILES ]</a></h3>
-        <h3><a href="#" onclick="showPage('messages')">[ SECRET MESSAGES ]</a></h3>
-        
-        <div id="clues" class="hidden">
-            <h2>Collected Clues</h2>
-            <ul>
-                <li>Red painting on the university wall.</li>
-                <li>Secret file dated <span id="unlockDate">[Locked]</span></li>
-                <li>Mysterious voice recording (awaiting release).</li>
-            </ul>
-        </div>
-        
-        <div id="cctv" class="hidden">
-            <h2>CCTV Footage</h2>
-            <p>This footage has been altered. Someone is trying to hide something.</p>
-            <video width="400" controls>
-                <source src="cctv_glitch.mp4" type="video/mp4">
-                Video cannot be played.
-            </video>
-        </div>
-        
-        <div id="casefiles" class="hidden">
-            <h2>Case Files</h2>
-            <p>Download the full investigation report:</p>
-            <a href="case_files.pdf" download>[ Download File ]</a>
-        </div>
-        
-        <div id="messages" class="hidden">
-            <h2>Secret Messages</h2>
-            <p>Someone has sent a message through this system. Are you brave enough to read it?</p>
-            <a href="#" onclick="revealMessage()">[ Read Message ]</a>
-            <p id="hiddenMessage" class="hidden">"I am always watching. Trust no one."</p>
-        </div>
-    </div>
-    
+
     <script>
-        function vpnCheck(vpnOn) {
-            let responseDiv = document.getElementById("vpnResponse");
-            let message = document.getElementById("vpnMessage");
-            let proceedButton = document.getElementById("proceedButton");
-            responseDiv.style.display = "block";
-
-            if (!vpnOn) {
-                message.innerHTML = "Your IP address has been logged. You can't undo this.<br><br>Location detected: somewhere near you. Are you sure you want to continue?<br><br>Last warning. Turn on your VPN before it's too late.";
-                proceedButton.innerText = "Continue anyway";
-                proceedButton.onclick = function() { alert("Don't say I didn't warn you. Have fun."); showHomepage(); };
+        function vpnCheck(isOn) {
+            let container = document.getElementById("vpnContainer");
+            if (isOn) {
+                container.innerHTML = `
+                    <h1>VPN CHECK</h1>
+                    <p>Your IP has been logged. You can't undo this.</p>
+                    <button onclick="nextStep('location')">OK</button>
+                `;
             } else {
-                let fakeIP = "192.168." + Math.floor(Math.random() * 255) + "." + Math.floor(Math.random() * 255);
-                message.innerHTML = "Verifying your connection...<br><br>Your IP address: " + fakeIP + " (Malaysia)<br><br>Are you sure this is your real IP?<br><br>Final check: Is anyone else watching you right now?";
-                proceedButton.innerText = "Proceed";
-                proceedButton.onclick = showHomepage;
+                container.innerHTML = `
+                    <h1>VPN CHECK</h1>
+                    <p>Your IP has been logged. You can't undo this.</p>
+                    <button onclick="nextStep('warn')">OK</button>
+                `;
             }
-            proceedButton.style.display = "block";
         }
-
-        function showHomepage() {
-            document.querySelector(".container").style.display = "none";
-            document.getElementById("homepage").style.display = "block";
-        }
-
-        function showPage(pageId) {
-            document.querySelectorAll('.hidden').forEach(el => el.style.display = 'none');
-            document.getElementById(pageId).style.display = 'block';
-        }
-
-        function revealMessage() {
-            document.getElementById("hiddenMessage").style.display = "block";
+        
+        function nextStep(step) {
+            let container = document.getElementById("vpnContainer");
+            if (step === 'location') {
+                container.innerHTML = `
+                    <h1>VPN CHECK</h1>
+                    <p>Location detected: somewhere near you. Are you sure you want to continue?</p>
+                    <button onclick="nextStep('final')">Yes</button>
+                    <button onclick="vpnCheck(false)">No, I'll turn on VPN</button>
+                `;
+            } else if (step === 'warn') {
+                container.innerHTML = `
+                    <h1>VPN CHECK</h1>
+                    <p>Last warning. Turn on your VPN before it's too late.</p>
+                    <button onclick="nextStep('continue')">Continue anyway</button>
+                    <button onclick="window.location.reload()">Exit</button>
+                `;
+            } else if (step === 'final') {
+                container.innerHTML = `
+                    <h1>VPN CHECK</h1>
+                    <p>You're in. Stay cautious.</p>
+                    <button onclick="window.location.href='homepage.html'">Proceed</button>
+                `;
+            } else if (step === 'continue') {
+                container.innerHTML = `
+                    <h1>VPN CHECK</h1>
+                    <p>Don't say I didn't warn you. Have fun.</p>
+                    <button onclick="window.location.href='homepage.html'">Proceed</button>
+                `;
+            }
         }
     </script>
 </body>
