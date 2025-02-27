@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VPN Verification</title>
+    <style>
+        body {
+            background-color: black;
+            color: #00ff00;
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
+            padding-top: 20vh;
+        }
+        .hidden { display: none; }
+        button {
+            background: black;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .glitch {
+            animation: glitch 0.3s infinite;
+        }
+        @keyframes glitch {
+            0% { text-shadow: 2px 2px red; }
+            50% { text-shadow: -2px -2px cyan; }
+            100% { text-shadow: 2px 2px red; }
+        }
+    </style>
+</head>
+<body>
+    <div id="step1">
+        <p>Verifying VPN status...</p>
+        <p>(Pause 2 seconds...)</p>
+        <p>Confirmed. But are you sure it’s working?</p>
+        <button onclick="vpnChoice(true)">YES</button>
+        <button onclick="vpnChoice(false)">NO</button>
+    </div>
+    
+    <div id="step2" class="hidden">
+        <p>Then why is your IP still visible?</p>
+        <button onclick="finalChoice(true)">Continue Anyway</button>
+        <button onclick="finalChoice(false)">Turn Back</button>
+    </div>
+    
+    <div id="warning" class="hidden">
+        <p class="glitch">You shouldn't be here unprotected.</p>
+        <p>(Loading...)</p>
+        <audio id="warningSound" src="warning.mp3" autoplay></audio>
+    </div>
+    
+    <div id="finalMessage" class="hidden">
+        <p class="glitch">Don't say I didn't warn you. Have fun.</p>
+        <button onclick="exitSequence()">Enter</button>
+    </div>
+    
+    <script>
+        function vpnChoice(status) {
+            document.getElementById("step1").classList.add("hidden");
+            if (status) {
+                document.getElementById("step2").classList.remove("hidden");
+            } else {
+                document.getElementById("warning").classList.remove("hidden");
+                setTimeout(() => {
+                    document.body.style.backgroundColor = "black";
+                    location.reload();
+                }, 4000);
+            }
+        }
+        
+        function finalChoice(status) {
+            document.getElementById("step2").classList.add("hidden");
+            if (status) {
+                document.getElementById("finalMessage").classList.remove("hidden");
+            } else {
+                document.getElementById("step1").classList.remove("hidden");
+            }
+        }
+        
+        function exitSequence() {
+            document.getElementById("finalMessage").innerHTML = "(Connection Lost)";
+            setTimeout(() => {
+                location.reload();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
