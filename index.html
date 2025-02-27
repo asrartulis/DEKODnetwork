@@ -1,43 +1,131 @@
-// Existing DEKOD Ultimate code...
-
-function trustVPN(isTrusted) {
-    if (isTrusted) {
-        document.getElementById("content").innerHTML = `
-            <p>Then let's see how far that trust gets you.</p>
-            <button onclick="goToHomepage()">Continue</button>
-            <button onclick="startVPNCheck()">Go Back</button>
-        `;
-    } else {
-        document.getElementById("content").innerHTML = `
-            <p>Good. You might just survive.</p>
-            <button onclick="goToHomepage()">Continue</button>
-            <button onclick="startVPNCheck()">Go Back</button>
-        `;
-    }
-}
-
-function startVPNCheck() {
-    // Show initial message
-    document.getElementById("content").innerHTML = `<p>Verifying VPN status...</p>`;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEKOD Investigation Archive</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: black;
+            color: #00ffcc;
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
+        }
+        #matrixCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+            background: black;
+        }
+        #content {
+            display: none;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrixCanvas"></canvas>
+    <div id="content" class="container">
+        <h1>DEKOD ARCHIVE</h1>
+        <p>"This case is not a coincidence. Something is being hidden. Solve the mystery before it's too late."</p>
+        
+        <h3><a href="#" onclick="showPage('clues')">[ CLUES ]</a></h3>
+        <h3><a href="#" onclick="showPage('cctv')">[ CCTV FOOTAGE ]</a></h3>
+        <h3><a href="#" onclick="showPage('casefiles')">[ CASE FILES ]</a></h3>
+        <h3><a href="#" onclick="showPage('messages')">[ SECRET MESSAGES ]</a></h3>
+        
+        <div id="clues" class="hidden">
+            <h2>Collected Clues</h2>
+            <ul>
+                <li>Red painting on the university wall.</li>
+                <li>Secret file dated <span id="unlockDate">[Locked]</span></li>
+                <li>Mysterious voice recording (awaiting release).</li>
+            </ul>
+        </div>
+        
+        <div id="cctv" class="hidden">
+            <h2>CCTV Footage</h2>
+            <p>This footage has been altered. Someone is trying to hide something.</p>
+            <video width="400" controls>
+                <source src="cctv_glitch.mp4" type="video/mp4">
+                Video cannot be played.
+            </video>
+        </div>
+        
+        <div id="casefiles" class="hidden">
+            <h2>Case Files</h2>
+            <p>Download the full investigation report:</p>
+            <a href="case_files.pdf" download>[ Download File ]</a>
+        </div>
+        
+        <div id="messages" class="hidden">
+            <h2>Secret Messages</h2>
+            <p>Someone has sent a message through this system. Are you brave enough to read it?</p>
+            <a href="#" onclick="revealMessage()">[ Read Message ]</a>
+            <p id="hiddenMessage" class="hidden">"I am always watching. Trust no one."</p>
+        </div>
+    </div>
     
-    // Wait for 2 seconds before continuing
-    setTimeout(() => {
-        document.getElementById("content").innerHTML = `
-            <p>Confirmed. But are you sure it's working?</p>
-            <button onclick="vpnWorking(true)">YES</button>
-            <button onclick="vpnWorking(false)">NO</button>
-        `;
-    }, 2000);
-}
+    <script>
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
 
-function vpnWorking(isWorking) {
-    document.getElementById("content").innerHTML = isWorking 
-        ? `<p>Great! Your VPN is working.</p>` 
-        : `<p>Uh-oh! You might want to check your VPN settings.</p>`;
-}
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-function goToHomepage() {
-    window.location.href = "homepage.html";
-}
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        const columns = canvas.width / 20;
+        const drops = Array.from({ length: columns }).fill(0);
 
-// Other DEKOD Ultimate code...
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = "#00ffcc";
+            ctx.font = "20px monospace";
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters[Math.floor(Math.random() * letters.length)];
+                ctx.fillText(text, i * 20, drops[i] * 20);
+
+                if (drops[i] * 20 > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+
+                drops[i]++;
+            }
+        }
+
+        function startMatrixEffect() {
+            setInterval(drawMatrix, 50);
+        }
+
+        function removeMatrixEffect() {
+            const fadeOut = setInterval(() => {
+                ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }, 50);
+
+            setTimeout(() => {
+                clearInterval(fadeOut);
+                document.getElementById('matrixCanvas').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+            }, 2000);
+        }
+
+        window.onload = function() {
+            startMatrixEffect();
+            setTimeout(removeMatrixEffect, 3000);
+        };
+
+        function showPage(pageId) {
+            document.querySelectorAll('.hidden').forEach(el => el.style.display = 'none');
+            document.getElementById(pageId).style.display = 'block';
+        }
+        function revealMessage() {
+            document.getElementById('hiddenMessage').style.display = 'block';
