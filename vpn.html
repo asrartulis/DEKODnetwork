@@ -31,7 +31,10 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
             showMessage("It's not safe here, do you wish to continue?", [
                 { text: "YES, PROCEED", action: () => redirectToHomepage("You've been warned. Have fun.") },
-                { text: "NO, TAKE ME BACK", action: () => { showMessage("Good choice."); closeTab(); } }
+                { text: "NO, TAKE ME BACK", action: () => { 
+                    showMessage("Good choice."); 
+                    closeTab(); 
+                }}
             ]);
         }, 6000);
     }
@@ -41,7 +44,10 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
             showMessage(`Are you sure it's working? Isn't this yours? <br>Your IP address: ${getRandomIp()} Location: Malaysia`, [
                 { text: "YES, PROCEED", action: () => redirectToHomepage() },
-                { text: "NO, LEAVE", action: () => { showMessage("Good choice."); closeTab(); } }
+                { text: "NO, LEAVE", action: () => { 
+                    showMessage("Good choice."); 
+                    closeTab(); 
+                }}
             ]);
         }, 3000);
     }
