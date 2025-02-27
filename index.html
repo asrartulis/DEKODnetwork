@@ -5,6 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DEKOD Access System</title>
     <style>
+        @keyframes glitch {
+            0% { text-shadow: 2px 2px 0 red, -2px -2px 0 blue; }
+            50% { text-shadow: -2px -2px 0 red, 2px 2px 0 blue; }
+            100% { text-shadow: 2px 2px 0 red, -2px -2px 0 blue; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.1; }
+            50% { opacity: 1; }
+            100% { opacity: 0.1; }
+        }
+
         body {
             background-color: black;
             color: #00ff00;
@@ -14,13 +31,17 @@
         .hidden {
             display: none;
         }
-        #accessScreen {
+        #loadingScreen, #accessScreen, #vpnScreen {
             font-size: 24px;
             font-weight: bold;
             border: 3px solid #00ff00;
             padding: 20px;
             display: inline-block;
             margin-top: 50px;
+            animation: flicker 1.5s infinite alternate;
+        }
+        #accessScreen {
+            animation: glitch 0.5s infinite alternate;
         }
         input {
             background: black;
