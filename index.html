@@ -3,127 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEKOD Investigation Archive</title>
+    <title>Glitch Loading</title>
     <style>
-    #glitch {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: black;
-        color: #00ffcc;
-        font-size: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-        text-transform: uppercase;
-        font-weight: bold;
-        animation: glitch 1s infinite alternate;
-    }
-
-    @keyframes glitch {
-        0% { text-shadow: 2px 2px red, -2px -2px blue; }
-        50% { text-shadow: -2px 2px red, 2px -2px blue; }
-        100% { text-shadow: 2px -2px red, -2px 2px blue; }
-    }
-</style>
-
+        /* General Styling */
         body {
             background-color: #0a0a0a;
             color: #00ffcc;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Courier New', monospace;
             text-align: center;
         }
+
+        /* Glitch Effect */
+        #glitch {
+            font-size: 40px;
+            font-weight: bold;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            text-shadow: 3px 3px red, -3px -3px blue;
+            animation: glitch 0.2s infinite alternate;
+        }
+
+        /* Hide Main Content Initially */
         .container {
-            max-width: 800px;
-            margin: 50px auto;
-        }
-        a {
-            color: #ff4444;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        .hidden {
             display: none;
+        }
+
+        /* Keyframes for Glitch */
+        @keyframes glitch {
+            0% { transform: translate(-50%, -50%) skewX(10deg); }
+            100% { transform: translate(-50%, -50%) skewX(-10deg); }
         }
     </style>
 </head>
 <body>
+
     <!-- Glitch Screen -->
     <div id="glitch">SYSTEM BOOTING...</div>
 
-    <!-- Main Content -->
+    <!-- Main Content (Initially Hidden) -->
     <div class="container">
-        <h1>DEKOD ARCHIVE</h1>
-
-    <div class="container">
-        <h1>DEKOD ARCHIVE</h1>
-        <p>"This case is not a coincidence. Something is being hidden. Solve the mystery before it's too late."</p>
-        
-        <h3><a href="#" onclick="showPage('clues')">[ CLUES ]</a></h3>
-        <h3><a href="#" onclick="showPage('cctv')">[ CCTV FOOTAGE ]</a></h3>
-        <h3><a href="#" onclick="showPage('casefiles')">[ CASE FILES ]</a></h3>
-        <h3><a href="#" onclick="showPage('messages')">[ SECRET MESSAGES ]</a></h3>
-        
-        <div id="clues" class="hidden">
-            <h2>Collected Clues</h2>
-            <ul>
-                <li>Red painting on the university wall.</li>
-                <li>Secret file dated <span id="unlockDate">[Locked]</span></li>
-                <li>Mysterious voice recording (awaiting release).</li>
-            </ul>
-        </div>
-
-        <div id="cctv" class="hidden">
-            <h2>CCTV Footage</h2>
-            <p>This footage has been altered. Someone is trying to hide something.</p>
-            <video width="400" controls>
-                <source src="cctv_glitch.mp4" type="video/mp4">
-                Video cannot be played.
-            </video>
-        </div>
-
-        <div id="casefiles" class="hidden">
-            <h2>Case Files</h2>
-            <p>Download the full investigation report:</p>
-            <a href="case_files.pdf" download>[ Download File ]</a>
-        </div>
-
-        <div id="messages" class="hidden">
-            <h2>Secret Messages</h2>
-            <p>Someone has sent a message through this system. Are you brave enough to read it?</p>
-            <a href="#" onclick="revealMessage()">[ Read Message ]</a>
-            <p id="hiddenMessage" class="hidden">"I am always watching. Trust no one."</p>
-        </div>
+        <h1>Welcome to the Homepage</h1>
+        <p>The website has successfully loaded!</p>
     </div>
-    
+
     <script>
-        function showPage(pageId) {
-            document.querySelectorAll('.hidden').forEach(el => el.style.display = 'none');
-            document.getElementById(pageId).style.display = 'block';
-        }
-        function revealMessage() {
-            document.getElementById('hiddenMessage').style.display = 'block';
-        }
+        // After 5 seconds, hide the glitch and show the main content
+        setTimeout(() => {
+            document.getElementById("glitch").style.display = "none"; // Hide booting screen
+            document.querySelector(".container").style.display = "block"; // Show main content
+        }, 5000);
     </script>
-    // Glitch effect: Tunjuk glitch dulu, pastu load homepage
-   setTimeout(() => {
-    document.getElementById("boot-screen").style.display = "none";
-    document.getElementById("homepage").style.display = "block";
-}, 3000);
 
-    function showPage(pageId) {
-       document.querySelectorAll(".hidden").forEach(el => el.style.display = 'none');
-        document.getElementById(pageId).style.display = 'block';
-    }
-
-    function revealMessage() {
-        document.getElementById('hiddenMessage').style.display = 'block';
-    }
-</script>
 </body>
 </html>
