@@ -3,46 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fake CCTV Footage</title>
+    <title>DEKOD Investigation Archive</title>
     <style>
         body {
-            background: black;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
+            background-color: #0a0a0a;
+            color: #00ffcc;
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
         }
-        .cctv-screen {
-            position: relative;
-            width: 80%;
+        .container {
             max-width: 800px;
-            border: 5px solid white;
-            filter: grayscale(100%) contrast(1.2);
-            overflow: hidden;
+            margin: 50px auto;
         }
-        video {
-            width: 100%;
-            height: auto;
+        a {
+            color: #ff4444;
+            text-decoration: none;
         }
-        .timestamp {
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
-            font-family: monospace;
-            color: white;
- buang cctv            background: black;
-            padding: 5px;
-            font-size: 14px;
+        a:hover {
+            text-decoration: underline;
+        }
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <h1>DEKOD ARCHIVE</h1>
+        <p>"This case is not a coincidence. Something is being hidden. Solve the mystery before it's too late."</p>
+        
+        <h3><a href="#" onclick="showPage('clues')">[ CLUES ]</a></h3>
+        <h3><a href="#" onclick="showPage('cctv')">[ CCTV FOOTAGE ]</a></h3>
+        <h3><a href="#" onclick="showPage('casefiles')">[ CASE FILES ]</a></h3>
+        <h3><a href="#" onclick="showPage('messages')">[ SECRET MESSAGES ]</a></h3>
+        
+        <div id="clues" class="hidden">
+            <h2>Collected Clues</h2>
+            <ul>
+                <li>Red painting on the university wall.</li>
+                <li>Secret file dated <span id="unlockDate">[Locked]</span></li>
+                <li>Mysterious voice recording (awaiting release).</li>
+            </ul>
+        </div>
 
-    <div class="cctv-screen">
-        <video src="cctv-footage.mp4" autoplay loop muted></video>
-        <div class="timestamp">CAM 01 - 2025/02/26 22:45:16</div>
+        <div id="cctv" class="hidden">
+            <h2>CCTV Footage</h2>
+            <p>This footage has been altered. Someone is trying to hide something.</p>
+            <video width="400" controls>
+                <source src="cctv_glitch.mp4" type="video/mp4">
+                Video cannot be played.
+            </video>
+        </div>
+
+        <div id="casefiles" class="hidden">
+            <h2>Case Files</h2>
+            <p>Download the full investigation report:</p>
+            <a href="case_files.pdf" download>[ Download File ]</a>
+        </div>
+
+        <div id="messages" class="hidden">
+            <h2>Secret Messages</h2>
+            <p>Someone has sent a message through this system. Are you brave enough to read it?</p>
+            <a href="#" onclick="revealMessage()">[ Read Message ]</a>
+            <p id="hiddenMessage" class="hidden">"I am always watching. Trust no one."</p>
+        </div>
     </div>
-
+    
+    <script>
+        function showPage(pageId) {
+            document.querySelectorAll('.hidden').forEach(el => el.style.display = 'none');
+            document.getElementById(pageId).style.display = 'block';
+        }
+        function revealMessage() {
+            document.getElementById('hiddenMessage').style.display = 'block';
+        }
+    </script>
 </body>
 </html>
