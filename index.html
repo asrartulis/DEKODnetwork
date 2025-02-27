@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEKOD ULTIMATE</title>
+    <title>DEKOD Investigation Archive</title>
     <style>
         body {
             background-color: #0a0a0a;
@@ -15,110 +15,104 @@
             max-width: 800px;
             margin: 50px auto;
         }
+        a {
+            color: #ff4444;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
         .hidden {
             display: none;
-        }
-        button {
-            background-color: #ff4444;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #cc0000;
         }
     </style>
 </head>
 <body>
-
-    <div id="bootScreen" class="container">
-        <h1>BOOTING SYSTEM...</h1>
-        <p>Loading security protocols...</p>
-        <p>Verifying user identity...</p>
-        <p>Checking encryption layers...</p>
-        <button onclick="startVPNCheck()">Proceed</button>
+    <div class="container">
+        <h1>VPN CHECK</h1>
+        <p>Are your VPN on?</p>
+        <button onclick="vpnCheck(true)">YES</button>
+        <button onclick="vpnCheck(false)">NO</button>
+        
+        <div id="vpnResponse" class="hidden">
+            <p id="vpnMessage"></p>
+            <button id="proceedButton" class="hidden" onclick="showHomepage()">Proceed</button>
+        </div>
     </div>
-
-    <div id="vpnCheck" class="container hidden">
-        <h1>Are your VPN on?</h1>
-        <button onclick="vpnResponse(true)">YES</button>
-        <button onclick="vpnResponse(false)">NO</button>
-    </div>
-
-    <div id="vpnNo" class="container hidden">
-        <h2>Your IP address: <span id="fake-ip">Checking...</span></h2>
-        <p>Oh... you thought you were safe?</p>
-        <p>Don't say I didn't warn you. Have fun.</p>
-    </div>
-
-    <div id="vpnYes1" class="container hidden">
-        <h2>Are you sure?</h2>
-        <button onclick="nextQuestion()">YES</button>
-    </div>
-
-    <div id="vpnYes2" class="container hidden">
-        <h2>We checked. It’s still leaking.</h2>
-        <p>Your real IP: <span id="fake-ip2">Checking...</span></p>
-        <button onclick="nextQuestion2()">Continue</button>
-    </div>
-
-    <div id="vpnYes3" class="container hidden">
-        <h2>Why are you still here?</h2>
-        <button onclick="redirectToHomepage()">Enter</button>
-    </div>
-
-    <div id="homepage" class="container hidden">
+    
+    <div id="homepage" class="hidden">
         <h1>DEKOD ARCHIVE</h1>
         <p>"This case is not a coincidence. Something is being hidden. Solve the mystery before it's too late."</p>
-        <h3><a href="#">[ CLUES ]</a></h3>
-        <h3><a href="#">[ CCTV FOOTAGE ]</a></h3>
-        <h3><a href="#">[ CASE FILES ]</a></h3>
-        <h3><a href="#">[ SECRET MESSAGES ]</a></h3>
+        <h3><a href="#" onclick="showPage('clues')">[ CLUES ]</a></h3>
+        <h3><a href="#" onclick="showPage('cctv')">[ CCTV FOOTAGE ]</a></h3>
+        <h3><a href="#" onclick="showPage('casefiles')">[ CASE FILES ]</a></h3>
+        <h3><a href="#" onclick="showPage('messages')">[ SECRET MESSAGES ]</a></h3>
+        
+        <div id="clues" class="hidden">
+            <h2>Collected Clues</h2>
+            <ul>
+                <li>Red painting on the university wall.</li>
+                <li>Secret file dated <span id="unlockDate">[Locked]</span></li>
+                <li>Mysterious voice recording (awaiting release).</li>
+            </ul>
+        </div>
+        
+        <div id="cctv" class="hidden">
+            <h2>CCTV Footage</h2>
+            <p>This footage has been altered. Someone is trying to hide something.</p>
+            <video width="400" controls>
+                <source src="cctv_glitch.mp4" type="video/mp4">
+                Video cannot be played.
+            </video>
+        </div>
+        
+        <div id="casefiles" class="hidden">
+            <h2>Case Files</h2>
+            <p>Download the full investigation report:</p>
+            <a href="case_files.pdf" download>[ Download File ]</a>
+        </div>
+        
+        <div id="messages" class="hidden">
+            <h2>Secret Messages</h2>
+            <p>Someone has sent a message through this system. Are you brave enough to read it?</p>
+            <a href="#" onclick="revealMessage()">[ Read Message ]</a>
+            <p id="hiddenMessage" class="hidden">"I am always watching. Trust no one."</p>
+        </div>
     </div>
-
+    
     <script>
-        function startVPNCheck() {
-            document.getElementById("bootScreen").style.display = "none";
-            document.getElementById("vpnCheck").style.display = "block";
-        }
+        function vpnCheck(vpnOn) {
+            let responseDiv = document.getElementById("vpnResponse");
+            let message = document.getElementById("vpnMessage");
+            let proceedButton = document.getElementById("proceedButton");
+            responseDiv.style.display = "block";
 
-        function generateMalaysianIP() {
-            let firstOctet = 175;
-            let secondOctet = Math.floor(Math.random() * 256);
-            let thirdOctet = Math.floor(Math.random() * 256);
-            let fourthOctet = Math.floor(Math.random() * 256);
-            return `${firstOctet}.${secondOctet}.${thirdOctet}.${fourthOctet}`;
-        }
-
-        function vpnResponse(isVpnOn) {
-            document.getElementById("vpnCheck").style.display = "none";
-
-            if (isVpnOn) {
-                document.getElementById("vpnYes1").style.display = "block";
+            if (!vpnOn) {
+                message.innerHTML = "Your IP address has been logged. You can't undo this.<br><br>Location detected: somewhere near you. Are you sure you want to continue?<br><br>Last warning. Turn on your VPN before it's too late.";
+                proceedButton.innerText = "Continue anyway";
+                proceedButton.onclick = function() { alert("Don't say I didn't warn you. Have fun."); showHomepage(); };
             } else {
-                document.getElementById("vpnNo").style.display = "block";
-                document.getElementById("fake-ip").innerText = generateMalaysianIP();
+                let fakeIP = "192.168." + Math.floor(Math.random() * 255) + "." + Math.floor(Math.random() * 255);
+                message.innerHTML = "Verifying your connection...<br><br>Your IP address: " + fakeIP + " (Malaysia)<br><br>Are you sure this is your real IP?<br><br>Final check: Is anyone else watching you right now?";
+                proceedButton.innerText = "Proceed";
+                proceedButton.onclick = showHomepage;
             }
+            proceedButton.style.display = "block";
         }
 
-        function nextQuestion() {
-            document.getElementById("vpnYes1").style.display = "none";
-            document.getElementById("vpnYes2").style.display = "block";
-            document.getElementById("fake-ip2").innerText = generateMalaysianIP();
-        }
-
-        function nextQuestion2() {
-            document.getElementById("vpnYes2").style.display = "none";
-            document.getElementById("vpnYes3").style.display = "block";
-        }
-
-        function redirectToHomepage() {
-            document.getElementById("vpnYes3").style.display = "none";
+        function showHomepage() {
+            document.querySelector(".container").style.display = "none";
             document.getElementById("homepage").style.display = "block";
         }
-    </script>
 
+        function showPage(pageId) {
+            document.querySelectorAll('.hidden').forEach(el => el.style.display = 'none');
+            document.getElementById(pageId).style.display = 'block';
+        }
+
+        function revealMessage() {
+            document.getElementById("hiddenMessage").style.display = "block";
+        }
+    </script>
 </body>
 </html>
