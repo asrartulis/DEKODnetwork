@@ -111,10 +111,10 @@
         }
     </script>
     // Glitch effect: Tunjuk glitch dulu, pastu load homepage
-    setTimeout(() => {
-        document.getElementById("glitch").style.display = "none"; // Hilangkan glitch
-        document.querySelector(".container").style.display = "block"; // Paparkan laman
-    }, 3000); // 3 saat delay
+   setTimeout(() => {
+    document.getElementById("boot-screen").style.display = "none";
+    document.getElementById("homepage").style.display = "block";
+}, 3000);
 
     function showPage(pageId) {
        document.querySelectorAll(".hidden").forEach(el => el.style.display = 'none');
