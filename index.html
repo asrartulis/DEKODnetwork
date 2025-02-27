@@ -1,95 +1,43 @@
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VPN CHECK</title>
-    <style>
-        body { background-color: black; color: cyan; font-family: monospace; text-align: center; padding: 50px; }
-        button { background-color: white; border: none; padding: 10px; margin: 10px; cursor: pointer; }
-    </style>
-    <script>
-        function getRandomIP() {
-            return `${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`;
-        }
-        
-        function startVPNCheck() {
-            document.getElementById("content").innerHTML = `
-                <p>Are your VPN on?</p>
-                <button onclick="vpnResponse(true)">YES</button>
-                <button onclick="vpnResponse(false)">NO</button>
-            `;
-        }
+// Existing DEKOD Ultimate code...
 
-        function vpnResponse(hasVPN) {
-            if (!hasVPN) {
-                let ip = getRandomIP();
-                document.getElementById("content").innerHTML = `
-                    <p>No VPN detected. Your real IP address is ${ip}. Location: [REDACTED]. Don’t bother checking, we already know.</p>
-                    <p>(Pause 2 seconds...)</p>
-                    <p>You’re completely exposed. The logs have been recorded.</p>
-                    <p>(Pause 2 seconds...)</p>
-                    <p>Don't say I didn't warn you. Have fun.</p>
-                    <button onclick="goToHomepage()">Proceed Anyway</button>
-                    <button onclick="startVPNCheck()">Go Back</button>
-                `;
-            } else {
-                document.getElementById("content").innerHTML = `
-                    <p>Verifying VPN status...</p>
-                    <p>(Pause 2 seconds...)</p>
-                    <p>Confirmed. But are you sure it’s working?</p>
-                    <button onclick="vpnWorking(true)">YES</button>
-                    <button onclick="vpnWorking(false)">NO</button>
-                `;
-            }
-        }
+function trustVPN(isTrusted) {
+    if (isTrusted) {
+        document.getElementById("content").innerHTML = `
+            <p>Then let's see how far that trust gets you.</p>
+            <button onclick="goToHomepage()">Continue</button>
+            <button onclick="startVPNCheck()">Go Back</button>
+        `;
+    } else {
+        document.getElementById("content").innerHTML = `
+            <p>Good. You might just survive.</p>
+            <button onclick="goToHomepage()">Continue</button>
+            <button onclick="startVPNCheck()">Go Back</button>
+        `;
+    }
+}
 
-        function vpnWorking(isSure) {
-            if (isSure) {
-                let maskedIP = getRandomIP();
-                document.getElementById("content").innerHTML = `
-                    <p>Interesting. Checking your masked IP...</p>
-                    <p>(Pause 2 seconds...)</p>
-                    <p>Your IP address: ${maskedIP}. Location: UNKNOWN.</p>
-                    <p>Not bad. But VPNs are never truly secure. Do you trust it?</p>
-                    <button onclick="trustVPN(true)">YES</button>
-                    <button onclick="trustVPN(false)">NO</button>
-                `;
-            } else {
-                document.getElementById("content").innerHTML = `
-                    <p>Wise choice. Most VPNs leak data without you even knowing.</p>
-                    <p>(Pause 2 seconds...)</p>
-                    <p>Maybe you should double-check your settings before proceeding.</p>
-                    <button onclick="goToHomepage()">Proceed Anyway</button>
-                    <button onclick="startVPNCheck()">Go Back</button>
-                `;
-            }
-        }
+function startVPNCheck() {
+    // Show initial message
+    document.getElementById("content").innerHTML = `<p>Verifying VPN status...</p>`;
+    
+    // Wait for 2 seconds before continuing
+    setTimeout(() => {
+        document.getElementById("content").innerHTML = `
+            <p>Confirmed. But are you sure it's working?</p>
+            <button onclick="vpnWorking(true)">YES</button>
+            <button onclick="vpnWorking(false)">NO</button>
+        `;
+    }, 2000);
+}
 
-        function trustVPN(isTrusted) {
-            if (isTrusted) {
-                document.getElementById("content").innerHTML = `
-                    <p>Then let's see how far that trust gets you.</p>
-                    <button onclick="goToHomepage()">Continue</button>
-                    <button onclick="startVPNCheck()">Go Back</button>
-                `;
-            } else {
-                document.getElementById("content").innerHTML = `
-                    <p>Good. You might just survive.</p>
-                    <button onclick="goToHomepage()">Continue</button>
-                    <button onclick="startVPNCheck()">Go Back</button>
-                `;
-            }
-        }
+function vpnWorking(isWorking) {
+    document.getElementById("content").innerHTML = isWorking 
+        ? `<p>Great! Your VPN is working.</p>` 
+        : `<p>Uh-oh! You might want to check your VPN settings.</p>`;
+}
 
-        function goToHomepage() {
-            window.location.href = "homepage.html";
-        }
-    </script>
-</head>
-<body onload="startVPNCheck()">
-    <div id="content"></div>
-</body>
-</html>
-```
+function goToHomepage() {
+    window.location.href = "homepage.html";
+}
+
+// Other DEKOD Ultimate code...
