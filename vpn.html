@@ -6,18 +6,24 @@
     <title>VPN Verification</title>
     <style>
         body {
-            body {
             background-color: black;
-            color: cyan;
+            color: limegreen;
+            font-family: 'Courier New', monospace;
             text-align: center;
-            font-family: monospace;
             padding: 50px;
         }
         button {
-            margin: 10px;
+            background-color: black;
+            color: limegreen;
+            border: 1px solid limegreen;
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
+            margin: 10px;
+        }
+        button:hover {
+            background-color: limegreen;
+            color: black;
         }
     </style>
 </head>
@@ -30,9 +36,9 @@
                 return `192.168.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`;
             }
 
-            function closeTab() {
-                document.body.style.animation = "glitch 3s infinite";
-                setTimeout(() => window.close(), 3000);
+            function closeTab(message, delay = 2000) {
+                showMessage(message);
+                setTimeout(() => window.close(), delay);
             }
 
             function showMessage(message, buttons = []) {
@@ -47,40 +53,28 @@
             }
 
             function startVpnCheck() {
-                showMessage("Is your VPN on?", [
-                    { text: "NO", action: () => noVpnFlow() },
-                    { text: "YES", action: () => yesVpnFlow() }
+                showMessage("Are you sure it's working? Are you sure it's on?", [
+                    { text: "YES, I'M SURE", action: () => askIpQuestion() },
+                    { text: "NO, LET ME CHECK", action: () => closeTab("Good choice.", 2000) }
                 ]);
             }
 
-            function noVpnFlow() {
-                showMessage(`No wonder... Is this your IP address? ${getRandomIp()} Location: Malaysia`);
-                setTimeout(() => {
-                    showMessage("It's not safe here, do you wish to continue?", [
-                        { text: "YES, PROCEED", action: () => redirectToHomepage("You've been warned. Have fun.") },
-                        { text: "NO, TAKE ME BACK", action: () => { 
-                            showMessage("Good choice."); 
-                            closeTab(); 
-                        }}
-                    ]);
-                }, 4000);
+            function askIpQuestion() {
+                showMessage(`Isn't this yours?<br>IP address: ${getRandomIp()}<br>Location: Malaysia`, [
+                    { text: "YES", action: () => askContinueQuestion() },
+                    { text: "NO", action: () => askContinueQuestion() }
+                ]);
             }
 
-            function yesVpnFlow() {
-                showMessage("Verifying VPN status... <br><progress></progress>");
-                setTimeout(() => {
-                    showMessage(`Are you sure it's working? Isn't this yours? <br>Your IP address: ${getRandomIp()} Location: Malaysia`, [
-                        { text: "YES, PROCEED", action: () => redirectToHomepage() },
-                        { text: "NO, LEAVE", action: () => { 
-                            showMessage("Good choice."); 
-                            closeTab(); 
-                        }}
-                    ]);
-                }, 3000);
+            function askContinueQuestion() {
+                showMessage("Do you still wish to continue?", [
+                    { text: "YES", action: () => finalWarning() },
+                    { text: "NO", action: () => closeTab("Good, this place is not for you.", 3000) }
+                ]);
             }
 
-            function redirectToHomepage(message = "") {
-                showMessage(message);
+            function finalWarning() {
+                showMessage("Don't say I didn't warn you. Have fun.");
                 setTimeout(() => {
                     window.location.href = "homepage.html";
                 }, 3000);
