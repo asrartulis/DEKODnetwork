@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CASE FILES - DEKOD ARCHIVE</title>
+    <title>DEKOD ARCHIVE</title>
     <style>
         body {
             background-color: black;
             color: lime;
-            font-family: monospace;
             text-align: center;
+            font-family: monospace;
         }
         h1 {
             font-size: 2em;
+            font-weight: bold;
         }
         a {
             color: red;
@@ -20,66 +21,39 @@
             font-weight: bold;
             display: block;
             margin: 10px 0;
-            cursor: pointer;
         }
         a:hover {
             color: lime;
             transition: 0.3s;
         }
-        .popup {
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 2s ease-in forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .case-file {
             display: none;
+            background-color: black;
+            border: 2px solid lime;
+            padding: 20px;
+            text-align: left;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: black;
-            color: lime;
-            padding: 20px;
-            border: 2px solid lime;
-            width: 90%;
-            max-width: 500px;
-            text-align: left;
-            font-size: 14px;
+            width: 50%;
+            color: white;
         }
-        .popup img {
-            width: 100%;
-        }
-        .popup .close {
-            display: block;
-            text-align: right;
-            cursor: pointer;
+        .close {
             color: red;
             font-weight: bold;
+            cursor: pointer;
+            float: right;
         }
     </style>
-</head>
-<body>
-    <h1>CASE FILES</h1>
-    <a onclick="openCase('case1')">[ CASE #1 ]</a>
-    <a onclick="openCase('case2')">[ CASE #2 ]</a>
-    <a onclick="openCase('case3')">[ CASE #3 ]</a>
-    <a onclick="openCase('case4')">[ CASE #4 ]</a>
-    <a onclick="openCase('case5')">[ CASE #5 ]</a>
-    <a onclick="openCase('case6')">[ CASE #6 ]</a>
-    <a onclick="openCase('case7')">[ CASE #7 ]</a>
-    
-    <div id="case1" class="popup">
-        <span class="close" onclick="closeCase('case1')">[ CLOSE ]</span>
-        <h2>Victim Profile</h2>
-        <img src="victim1.jpg" alt="Victim Photo">
-        <p><strong>NAME:</strong> John Doe</p>
-        <p><strong>AGE:</strong> 22</p>
-        <p><strong>SEX:</strong> Male</p>
-        <p><strong>STUDY PROGRAM:</strong> Computer Science</p>
-        <p><strong>ACTIVITIES AND CLUBS:</strong> Debate Club, Cyber Security Team</p>
-        <h3>CBE Involvement</h3>
-        <p><strong>Type of Work Hired:</strong> Data Analysis</p>
-        <p><strong>Frequency:</strong> Weekly</p>
-        <p><strong>Payment Method:</strong> Crypto</p>
-        <p><strong>Last Transaction:</strong> 12 Feb 2025</p>
-        <p><strong>Possible Conflict:</strong> Dispute over leaked data</p>
-    </div>
-    
     <script>
         function openCase(caseId) {
             document.getElementById(caseId).style.display = 'block';
@@ -88,5 +62,93 @@
             document.getElementById(caseId).style.display = 'none';
         }
     </script>
+</head>
+<body>
+    <h1 class="fade-in">DEKOD ARCHIVE</h1>
+    <p class="fade-in">"This case is not a coincidence. Something is being hidden. Solve the mystery before it's too late."</p>
+    <a href="#" class="fade-in">[ CLUES ]</a>
+    <a href="#" class="fade-in">[ CCTV FOOTAGE ]</a>
+    <a href="#" class="fade-in">[ CASE FILES ]</a>
+    <a href="#" class="fade-in">[ SECRET MESSAGES ]</a>
+    
+    <h2 class="fade-in">CASE FILES</h2>
+    <a onclick="openCase('case1')">[ CASE #1 ]</a>
+    <a onclick="openCase('case2')">[ CASE #2 ]</a>
+    <a onclick="openCase('case3')">[ CASE #3 ]</a>
+    <a onclick="openCase('case4')">[ CASE #4 ]</a>
+    <a onclick="openCase('case5')">[ CASE #5 ]</a>
+    <a onclick="openCase('case6')">[ CASE #6 ]</a>
+    <a onclick="openCase('case7')">[ CASE #7 ]</a>
+
+    <!-- Case Profiles -->
+    <div id="case1" class="case-file">
+        <span class="close" onclick="closeCase('case1')">[ CLOSE ]</span>
+        <h2>Victim Profile - Case #1</h2>
+        <p><strong>NAME:</strong> John Doe</p>
+        <p><strong>AGE:</strong> 22</p>
+        <p><strong>SEX:</strong> Male</p>
+        <p><strong>STUDY PROGRAM:</strong> Computer Science</p>
+        <p><strong>ACTIVITIES AND CLUBS:</strong> Debate Club, Cyber Security Team</p>
+    </div>
+    
+    <div id="case2" class="case-file">
+        <span class="close" onclick="closeCase('case2')">[ CLOSE ]</span>
+        <h2>Victim Profile - Case #2</h2>
+        <p><strong>NAME:</strong> Jane Smith</p>
+        <p><strong>AGE:</strong> 21</p>
+        <p><strong>SEX:</strong> Female</p>
+        <p><strong>STUDY PROGRAM:</strong> Forensic Science</p>
+        <p><strong>ACTIVITIES AND CLUBS:</strong> Chess Club, Crime Investigation Team</p>
+    </div>
+    
+    <div id="case3" class="case-file">
+        <span class="close" onclick="closeCase('case3')">[ CLOSE ]</span>
+        <h2>Victim Profile - Case #3</h2>
+        <p><strong>NAME:</strong> Alex Carter</p>
+        <p><strong>AGE:</strong> 23</p>
+        <p><strong>SEX:</strong> Non-binary</p>
+        <p><strong>STUDY PROGRAM:</strong> Psychology</p>
+        <p><strong>ACTIVITIES AND CLUBS:</strong> Drama Club, Mental Health Advocacy</p>
+    </div>
+
+    <div id="case4" class="case-file">
+        <span class="close" onclick="closeCase('case4')">[ CLOSE ]</span>
+        <h2>Victim Profile - Case #4</h2>
+        <p><strong>NAME:</strong> David Lee</p>
+        <p><strong>AGE:</strong> 24</p>
+        <p><strong>SEX:</strong> Male</p>
+        <p><strong>STUDY PROGRAM:</strong> Engineering</p>
+        <p><strong>ACTIVITIES AND CLUBS:</strong> Robotics Team, Tech Society</p>
+    </div>
+
+    <div id="case5" class="case-file">
+        <span class="close" onclick="closeCase('case5')">[ CLOSE ]</span>
+        <h2>Victim Profile - Case #5</h2>
+        <p><strong>NAME:</strong> Sarah Lim</p>
+        <p><strong>AGE:</strong> 20</p>
+        <p><strong>SEX:</strong> Female</p>
+        <p><strong>STUDY PROGRAM:</strong> Journalism</p>
+        <p><strong>ACTIVITIES AND CLUBS:</strong> School Newspaper, Photography Club</p>
+    </div>
+
+    <div id="case6" class="case-file">
+        <span class="close" onclick="closeCase('case6')">[ CLOSE ]</span>
+        <h2>Victim Profile - Case #6</h2>
+        <p><strong>NAME:</strong> Michael Tan</p>
+        <p><strong>AGE:</strong> 22</p>
+        <p><strong>SEX:</strong> Male</p>
+        <p><strong>STUDY PROGRAM:</strong> Business</p>
+        <p><strong>ACTIVITIES AND CLUBS:</strong> Finance Club, Investment Society</p>
+    </div>
+
+    <div id="case7" class="case-file">
+        <span class="close" onclick="closeCase('case7')">[ CLOSE ]</span>
+        <h2>Victim Profile - Case #7</h2>
+        <p><strong>NAME:</strong> Emily Wong</p>
+        <p><strong>AGE:</strong> 23</p>
+        <p><strong>SEX:</strong> Female</p>
+        <p><strong>STUDY PROGRAM:</strong> Medicine</p>
+        <p><strong>ACTIVITIES AND CLUBS:</strong> Red Cross, Medical Research Team</p>
+    </div>
 </body>
 </html>
