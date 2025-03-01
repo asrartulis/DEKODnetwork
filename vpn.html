@@ -36,7 +36,7 @@
                 return `192.168.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`;
             }
 
-            function closeTab(message, delay = 2000) {
+            function closeTab(message, delay = 1000) {
                 showMessage(message);
                 setTimeout(() => window.close(), delay);
             }
@@ -53,16 +53,17 @@
             }
 
             function startVpnCheck() {
-                showMessage("Are you sure it's working? Are you sure it's on?", [
-                    { text: "YES, I'M SURE", action: () => askIpQuestion() },
-                    { text: "NO, LET ME CHECK", action: () => closeTab("Good choice.", 2000) }
+                showMessage("Is your VPN on?", [
+                    { text: "YES", action: () => askIpQuestion() },
+                    { text: "NO", action: () => closeTab("Good choice.", 2000) }
                 ]);
             }
 
             function askIpQuestion() {
-                showMessage(`Isn't this yours?<br>IP address: ${getRandomIp()}<br>Location: Malaysia`, [
+                showMessage(`Really? Isn't this yours?<br>IP address: ${getRandomIp()}<br>Location: Malaysia`, [
                     { text: "YES", action: () => askContinueQuestion() },
                     { text: "NO", action: () => askContinueQuestion() }
+                    { text: "Umm..", action: () => askContinueQuestion() }
                 ]);
             }
 
@@ -77,7 +78,7 @@
                 showMessage("Don't say I didn't warn you. Have fun.");
                 setTimeout(() => {
                     window.location.href = "homepage.html";
-                }, 3000);
+                }, 2000);
             }
 
             startVpnCheck();
