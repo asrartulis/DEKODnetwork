@@ -55,7 +55,7 @@
                 if (progress > 100) progress = 100;
                 progressBar.style.width = progress + "%";
                 loadingText.textContent = "Loading " + progress + "%";
-                setTimeout(updateProgress, 500);
+                setTimeout(updateProgress, 2000);
             } else {
                setTimeout(function () {
     window.location.href = "index.html";
@@ -63,7 +63,7 @@
             }
         }
         
-        setTimeout(updateProgress, 500);
+        setTimeout(updateProgress, 2000);
     </script>
 </body>
 </html>
