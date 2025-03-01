@@ -62,7 +62,7 @@
             function askIpQuestion() {
                 showMessage(`Really? Isn't this yours?<br>IP address: ${getRandomIp()}<br>Location: Malaysia`, [
                     { text: "YES", action: () => askContinueQuestion() },
-                    { text: "NO", action: () => askContinueQuestion() }
+                    { text: "NO", action: () => askContinueQuestion() },
                     { text: "Umm..", action: () => askContinueQuestion() }
                 ]);
             }
