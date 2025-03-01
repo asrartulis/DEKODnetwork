@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Screen</title>
+    <style>
+        body {
+            background-color: black;
+            color: #00ff00;
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        #loadingContainer {
+            width: 300px;
+            height: 30px;
+            border: 2px solid #00ff00;
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            position: relative;
+        }
+
+        #progressBar {
+            height: 100%;
+            background-color: #00ff00;
+            width: 0%;
+        }
+
+        #loadingText {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="loadingContainer">
+        <div id="progressBar"></div>
+    </div>
+    <div id="loadingText">Loading 0%</div>
+
+    <script>
+        let progress = 0;
+        const progressBar = document.getElementById("progressBar");
+        const loadingText = document.getElementById("loadingText");
+
+        function updateProgress() {
+            if (progress < 100) {
+                progress += Math.floor(Math.random() * 10) + 5;
+                if (progress > 100) progress = 100;
+                progressBar.style.width = progress + "%";
+                loadingText.textContent = "Loading " + progress + "%";
+                setTimeout(updateProgress, 500);
+            } else {
+                window.location.href = "index.html";
+            }
+        }
+        
+        setTimeout(updateProgress, 500);
+    </script>
+</body>
+</html>
+
+
