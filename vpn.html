@@ -53,7 +53,7 @@
             }
 
             function startVpnCheck() {
-                showMessage("Is your VPN on?"), [
+                showMessage("Is your VPN on?", [
                     { text: "YES", action: () => askIpQuestion() },
                     { text: "NO", action: () => closeTab("Turn on your VPN.", 2000) }
                 ]);
