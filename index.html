@@ -27,10 +27,6 @@
         .hidden {
             display: none;
         }
-    
-        #accessScreen {
-            animation: glitch 0.5s infinite alternate;
-        }
         input {
             background: black;
             border: 1px solid #00ff00;
@@ -58,9 +54,11 @@
     </style>
 </head>
 <body>
-    <div id="loadingScreen">
-        <p>Loading...</p>
-    </div>
+    <script>
+        setTimeout(function () {
+            window.location.href = "loading.html";
+        }, 2000);
+    </script>
     
     <div id="passwordScreen" class="hidden">
         <p>Enter Password:</p>
