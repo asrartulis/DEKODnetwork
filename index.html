@@ -24,9 +24,6 @@
             text-align: center;
             position: relative;
         }
-        .hidden {
-            display: none;
-        }
         input {
             background: black;
             border: 1px solid #00ff00;
@@ -54,13 +51,7 @@
     </style>
 </head>
 <body>
-    <script>
-        setTimeout(function () {
-            window.location.href = "loading.html";
-        }, 2000);
-    </script>
-    
-    <div id="passwordScreen" class="hidden">
+    <div id="passwordScreen">
         <p>Enter Password:</p>
         <input type="password" id="passwordInput">
         <button onclick="checkPassword()">Submit</button>
@@ -69,11 +60,6 @@
     <div id="clock"></div>
     
     <script>
-        setTimeout(() => {
-            document.getElementById("loadingScreen").classList.add("hidden");
-            document.getElementById("passwordScreen").classList.remove("hidden");
-        }, 2000);
-        
         function checkPassword() {
             const correctPassword = "DEKOD2025";
             let enteredPassword = document.getElementById("passwordInput").value;
